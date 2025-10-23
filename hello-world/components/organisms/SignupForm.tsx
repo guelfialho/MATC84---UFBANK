@@ -1,12 +1,12 @@
 import React from "react";
 import { FormField } from "../molecules/FormField";
 import { Button } from "../atoms/Button";
+import { Heading } from "../atoms/Heading";
+import { InlineTextLink } from "../molecules/InlineTextLink";
 
 export const SignupForm = () => (
   <form className="bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl p-8 w-full max-w-md mx-auto">
-    <h2 className="text-2xl font-bold text-center mb-6 text-violet-800">
-      Crie sua conta UFBANK
-    </h2>
+    <Heading level={2} className="text-2xl mb-6">Crie sua conta</Heading>
 
     <FormField id="name" label="Nome completo" placeholder="Fulano Sicrano da Silva" />
     <FormField id="email" label="E-mail" type="email" placeholder="exemplo@mail.com" />
@@ -15,11 +15,6 @@ export const SignupForm = () => (
 
     <Button type="submit" className="mt-4">Cadastrar</Button>
 
-    <p className="text-sm text-center text-gray-600 mt-4">
-      Já tem conta?{" "}
-      <a href="#" className="text-violet-700 hover:underline font-medium">
-        Entrar
-      </a>
-    </p>
+    <InlineTextLink text="Já tem conta?" linkText="Entrar" href="#"/>
   </form>
 );
