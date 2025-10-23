@@ -11,12 +11,22 @@ export default function Form() {
   return (
     <Box>
       <Paper elevation={3} sx={{ width: '100%', maxWidth: 500, display: 'flex', flexDirection: 'column', margin: 'auto' ,padding:4, mt:2}}>
+
+        {/* Atomo */}
         <Typography variant="h4" gutterBottom>
           Cadastrar
         </Typography>
-        <TextField id="standard-basic" label="Nome" variant="standard" sx={{mt:2}}/>
-        <TextField id="standard-basic" label="Email" variant="standard" sx={{mt:2}} />
-        <TextField id="standard-basic" label="Senha" variant="standard" sx={{mt:2}} />
+
+        {/* Molécula = label + input */}
+        <TextField id="standard-basic" label="Nome" variant="standard" sx={{mt:2}}/> 
+
+        {/* Molécula = label + input */}
+        <TextField id="standard-basic" label="Email" variant="standard" sx={{mt:2}} /> 
+
+        {/* Molécula = label + input */}
+        <TextField id="standard-basic" label="Senha" variant="standard" sx={{mt:2}} /> 
+
+        {/* Atomo */}
         <Button variant="contained" sx={{mt:6}}>Cadastrar</Button>
       </Paper>
     </Box>
