@@ -11,14 +11,8 @@ export function RegisterForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md mx-auto flex flex-col gap-4"
-    >
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
-        Cadastro de Usuário
-      </h2>
-
+    <form onSubmit={handleSubmit}>
+      <h2>Cadastro de Usuário</h2>
       <FormField
         label="Nome completo"
         name="nome"
@@ -39,7 +33,6 @@ export function RegisterForm() {
         placeholder="Crie uma senha"
         required
       />
-
       <Button type="submit">Cadastrar</Button>
     </form>
   );

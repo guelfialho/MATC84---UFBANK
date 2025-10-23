@@ -20,8 +20,8 @@ export function FormField({
   return (
     <Input
       label={label}
-      name={name}
       type={type}
+      name={name}
       placeholder={placeholder}
       required={required}
     />
