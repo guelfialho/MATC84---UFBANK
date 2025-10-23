@@ -8,10 +8,9 @@ export const RegisterTemplate: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 md:p-12">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-block p-3 bg-purple-900/50 rounded-full mb-4 ring-2 ring-purple-500/50">
-            <FontAwesomeIcon icon={faUserPlus} className="w-8 h-8 text-purple-400" />
+            <FontAwesomeIcon icon={faUserPlus} className="w-8 h-8 text-purple-400"/>
           </div>
           <Text variant="heading" className="mb-2">
             Criar Nova Conta
@@ -21,10 +20,8 @@ export const RegisterTemplate: React.FC = () => {
           </Text>
         </div>
 
-        {/* Form */}
-        <RegisterForm />
+        <RegisterForm/>
 
-        {/* Footer */}
         <div className="mt-8 text-center">
           <Text variant="caption">
             Já tem uma conta?{' '}
