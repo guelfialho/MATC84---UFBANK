@@ -9,7 +9,7 @@ export default function Page() {
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<Partial<typeof formData>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,12 +17,14 @@ export default function Page() {
   };
 
   const validateForm = () => {
-    const newErrors: any = {};
+    const newErrors: Partial<typeof formData> = {};
     if (!formData.username) newErrors.username = "Escolha um nome de usuário";
     if (!formData.email) newErrors.email = "Forneça um email";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email inválido";
     if (!formData.password) newErrors.password = "Escolha uma senha";
+    else if (formData.password.length < 6)
+      newErrors.password = "Senha deve ter pelo menos 6 caracteres";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Senhas não coincidem";
     return newErrors;
@@ -35,7 +37,6 @@ export default function Page() {
       setErrors(validationErrors);
       return;
     }
-    // Aqui você pode adicionar lógica para enviar os dados, ex: API call
     console.log(formData);
     alert("Cadastro realizado!");
     // Reset form
@@ -44,8 +45,8 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Cadastro</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -58,14 +59,14 @@ export default function Page() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {errors.username && (
               <p className="mt-2 text-sm text-red-600">{errors.username}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="text-sm font-medium">
+            <label htmlFor="email" className="block text-sm font-medium">
               Email
             </label>
             <input
@@ -74,14 +75,14 @@ export default function Page() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {errors.email && (
               <p className="mt-2 text-sm text-red-600">{errors.email}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="text-sm font-medium">
+            <label htmlFor="password" className="block text-sm font-medium">
               Senha
             </label>
             <input
@@ -90,14 +91,17 @@ export default function Page() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {errors.password && (
-              <p className="mt-2 text-sm text-red-600">{errors.senha}</p>
+              <p className="mt-2 text-sm text-red-600">{errors.password}</p>
             )}
           </div>
           <div className="mb-6">
-            <label htmlFor="confirmPassword" className="text-sm font-medium">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium"
+            >
               Confirmar Senha
             </label>
             <input
@@ -106,7 +110,7 @@ export default function Page() {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {errors.confirmPassword && (
               <p className="mt-2 text-sm text-red-600">
