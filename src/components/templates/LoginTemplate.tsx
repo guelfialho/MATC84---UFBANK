@@ -1,6 +1,6 @@
-'use client';
+ 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/free-solid-svg-icons';
 import { Text } from '../atoms/Text';
@@ -15,6 +15,44 @@ export const LoginTemplate: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    router.push('/machines');
+  };
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const STORAGE_KEY = 'ufbank_users';
+
+  function getStoredUsers() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw) as Array<{ email: string; password: string }>;
+    } catch {
+      return [];
+    }
+  }
+
+  const doLogin = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setError(null);
+    if (!email || !password) {
+      setError('Preencha e-mail e senha.');
+      return;
+    }
+    const users = getStoredUsers();
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!user) {
+      setError('Usuário não encontrado.');
+      return;
+    }
+    if (user.password !== password) {
+      setError('Senha incorreta.');
+      return;
+    }
+    // mock auth token
+    localStorage.setItem('ufbank_auth', JSON.stringify({ email, token: 'mock-token' }));
     router.push('/machines');
   };
 
@@ -33,17 +71,23 @@ export const LoginTemplate: React.FC = () => {
           </Text>
         </div>
 
-        <form className="space-y-4">
-          <FormField 
-            label="E-mail" 
+        <form className="space-y-4" onSubmit={doLogin}>
+          <FormField
+            label="E-mail"
             type="email"
             placeholder="email@gmail.com"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <FormField 
-            label="Senha" 
+          <FormField
+            label="Senha"
             type="password"
             placeholder="Digite sua senha"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div className="flex items-center justify-between">
@@ -53,8 +97,10 @@ export const LoginTemplate: React.FC = () => {
             </a>
           </div>
 
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+
           <div className="pt-4">
-            <Button variant="primary" className="w-full" onClick={() => router.push('/machines')}>
+            <Button variant="primary" className="w-full" onClick={() => doLogin()}>
               Entrar
             </Button>
           </div>

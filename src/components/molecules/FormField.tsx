@@ -7,22 +7,31 @@ interface FormFieldProps {
   placeholder?: string;
   helperText?: string;
   error?: string;
+  name?: string;
+  value?: any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({ 
-  label, 
-  type, 
+export const FormField: React.FC<FormFieldProps> = ({
+  label,
+  type,
   placeholder,
   helperText,
-  error
+  error,
+  name,
+  value,
+  onChange
 }) => {
   return (
     <div className="w-full">
-      <Input 
-        label={label} 
-        type={type} 
+      <Input
+        label={label}
+        type={type}
         placeholder={placeholder}
         className={error ? 'border-red-500' : ''}
+        name={name}
+        value={value}
+        onChange={onChange}
       />
       {helperText && !error && (
         <p className="mt-1 text-xs text-gray-500">{helperText}</p>
