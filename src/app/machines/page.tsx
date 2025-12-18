@@ -18,7 +18,7 @@ export default function MachinesPage() {
         router.push('/');
         return;
       }
-    } catch (e) {
+    } catch {
       router.push('/');
     }
   }, [router]);
