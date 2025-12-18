@@ -13,11 +13,6 @@ import { useRouter } from 'next/navigation';
 export const LoginTemplate: React.FC = () => {
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push('/machines');
-  };
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);

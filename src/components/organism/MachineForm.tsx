@@ -15,19 +15,42 @@ export function MachineForm({ onSubmit, onCancel }: MachineFormProps) {
     serie: "",
     data: "",
   });
+  const [error, setError] = useState<string | null>(null);
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (error) setError(null);
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // validate acquisition date: must be today or earlier
+    if (!form.data) {
+      setError('Preencha a data de aquisição.');
+      return;
+    }
+    const selected = new Date(form.data);
+    const today = new Date();
+    selected.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    if (selected > today) {
+      setError('A data de aquisição não pode ser no futuro.');
+      return;
+    }
+
     if (onSubmit) {
       onSubmit(form);
       setForm({ nome: "", modelo: "", serie: "", data: "" });
+      setError(null);
     } else {
       alert("Máquina cadastrada com sucesso!");
       console.log(form);
+      setError(null);
     }
   }
 
@@ -74,8 +97,10 @@ export function MachineForm({ onSubmit, onCancel }: MachineFormProps) {
           value={form.data}
           onChange={handleChange}
           required
+          max={todayStr}
           className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
         />
+        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
       </div>
 
       <div className="flex gap-4">
