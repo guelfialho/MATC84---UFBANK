@@ -39,13 +39,11 @@ export const DashboardTemplate: React.FC = () => {
 
   const handleAddMachine = (machine: { nome: string; modelo: string; serie: string; data: string }) => {
     if (editingMachine) {
-      // Update existing machine
       setMachines(machines.map(m => 
         m.id === editingMachine.id ? { ...m, ...machine } : m
       ));
       setEditingMachine(null);
     } else {
-      // Add new machine
       const newMachine: Machine = {
         id: Date.now().toString(),
         ...machine
@@ -80,7 +78,6 @@ export const DashboardTemplate: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">

@@ -46,7 +46,6 @@ export const LoginTemplate: React.FC = () => {
       setError('Senha incorreta.');
       return;
     }
-    // mock auth token
     localStorage.setItem('ufbank_auth', JSON.stringify({ email, token: 'mock-token' }));
     router.push('/machines');
   };

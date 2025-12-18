@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "../atoms/Button";
 
 interface MachineFormProps {
@@ -11,18 +11,15 @@ interface MachineFormProps {
 }
 
 export function MachineForm({ onSubmit, onCancel, initialValues, isEditing }: MachineFormProps) {
-  const [form, setForm] = useState({
-    nome: "",
-    modelo: "",
-    serie: "",
-    data: "",
-  });
-
-  useEffect(() => {
-    if (initialValues) {
-      setForm(initialValues);
+  const [form, setForm] = useState(
+    initialValues || {
+      nome: "",
+      modelo: "",
+      serie: "",
+      data: "",
     }
-  }, [initialValues]);
+  );
+
   const [error, setError] = useState<string | null>(null);
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -37,7 +34,6 @@ export function MachineForm({ onSubmit, onCancel, initialValues, isEditing }: Ma
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // validate acquisition date: must be today or earlier
     if (!form.data) {
       setError('Preencha a data de aquisição.');
       return;

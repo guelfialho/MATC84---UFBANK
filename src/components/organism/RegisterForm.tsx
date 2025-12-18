@@ -40,7 +40,6 @@ export const RegisterForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // Ensure admin user exists
   useEffect(() => {
     try {
       const users = getStoredUsers();
@@ -49,8 +48,7 @@ export const RegisterForm: React.FC = () => {
         users.push({ firstName: 'Admin', lastName: 'Teste', email: 'admin@teste.com', phone: '', password: 'admin' });
         setStoredUsers(users);
       }
-    } catch (e) {
-      // ignore
+    } catch  {
     }
   }, []);
 
