@@ -38,10 +38,11 @@ export function MachineForm({ onSubmit, onCancel, initialValues, isEditing }: Ma
       setError('Preencha a data de aquisição.');
       return;
     }
-    const selected = new Date(form.data);
+    const [y, m, d] = form.data.split('-');
+    const selected = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
     const today = new Date();
-    selected.setHours(0,0,0,0);
-    today.setHours(0,0,0,0);
+    selected.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
     if (selected > today) {
       setError('A data de aquisição não pode ser no futuro.');
       return;

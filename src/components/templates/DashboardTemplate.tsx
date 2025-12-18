@@ -8,6 +8,7 @@ import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
 import { Modal } from '../molecules/Modal';
 import { MachineForm } from '../organism/MachineForm';
+import MachineFeeForm, { MachineFees } from '../organism/MachineFeeForm';
 
 interface Machine {
   id: string;
@@ -15,6 +16,7 @@ interface Machine {
   modelo: string;
   serie: string;
   data: string;
+  fees?: MachineFees;
 }
 
 export const DashboardTemplate: React.FC = () => {
@@ -29,10 +31,12 @@ export const DashboardTemplate: React.FC = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
+  const [isFeeModalOpen, setIsFeeModalOpen] = useState(false);
+  const [feeEditingMachine, setFeeEditingMachine] = useState<Machine | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (machines.length > 0 || localStorage.getItem('machines')) {
+    if (typeof window !== 'undefined') {
       localStorage.setItem('machines', JSON.stringify(machines));
     }
   }, [machines]);
@@ -46,9 +50,13 @@ export const DashboardTemplate: React.FC = () => {
     } else {
       const newMachine: Machine = {
         id: Date.now().toString(),
-        ...machine
+        ...machine,
+        fees: undefined,
       };
-      setMachines([...machines, newMachine]);
+      setMachines(prev => [...prev, newMachine]);
+      // after creating a new machine, open fee modal to configure repasses
+      setFeeEditingMachine(newMachine);
+      setIsFeeModalOpen(true);
     }
     setIsModalOpen(false);
   };
@@ -60,6 +68,17 @@ export const DashboardTemplate: React.FC = () => {
   const handleEditMachine = (machine: Machine) => {
     setEditingMachine(machine);
     setIsModalOpen(true);
+  };
+
+  const handleOpenFeeModal = (machine: Machine) => {
+    setFeeEditingMachine(machine);
+    setIsFeeModalOpen(true);
+  };
+
+  const handleSaveFees = (machineId: string, fees: MachineFees) => {
+    setMachines(prev => prev.map(m => m.id === machineId ? { ...m, fees } : m));
+    setFeeEditingMachine(null);
+    setIsFeeModalOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -151,7 +170,7 @@ export const DashboardTemplate: React.FC = () => {
                   <div className="flex justify-between">
                     <Text variant="caption" className="text-gray-500">Data:</Text>
                     <Text variant="caption" className="text-gray-300">
-                      {new Date(machine.data).toLocaleDateString('pt-BR')}
+                      {machine.data ? machine.data.split('-').reverse().join('/') : ''}
                     </Text>
                   </div>
                 </div>
@@ -163,6 +182,12 @@ export const DashboardTemplate: React.FC = () => {
                   >
                     <FontAwesomeIcon icon={faEdit} />
                     Editar
+                  </button>
+                  <button
+                    onClick={() => handleOpenFeeModal(machine)}
+                    className="px-3 py-2 bg-yellow-900/20 border border-yellow-500/50 text-yellow-300 rounded-lg hover:bg-yellow-900/40 transition-all text-sm font-semibold"
+                  >
+                    Alterar Taxas
                   </button>
                   <button
                     onClick={() => handleDeleteMachine(machine.id)}
@@ -193,6 +218,21 @@ export const DashboardTemplate: React.FC = () => {
           } : undefined}
           isEditing={!!editingMachine}
         />
+      </Modal>
+
+      <Modal
+        isOpen={isFeeModalOpen}
+        onClose={() => { setIsFeeModalOpen(false); setFeeEditingMachine(null); }}
+        title={feeEditingMachine ? `Taxas - ${feeEditingMachine.nome}` : 'Editar Taxas'}
+      >
+        {feeEditingMachine && (
+          <MachineFeeForm
+            machineId={feeEditingMachine.id}
+            initial={feeEditingMachine.fees}
+            onSave={handleSaveFees}
+            onClose={() => { setIsFeeModalOpen(false); setFeeEditingMachine(null); }}
+          />
+        )}
       </Modal>
     </div>
   );
