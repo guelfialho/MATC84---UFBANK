@@ -49,7 +49,6 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
     let cust = Number(customer) || 0;
     if (cust < 0) cust = 0;
     if (cust > total) cust = total;
-    // round to one decimal place
     cust = Math.round(cust * 10) / 10;
     const user = Math.round((total - cust) * 10) / 10;
     setFees({ ...fees, [key]: { total, customer: cust, user } });
@@ -57,7 +56,6 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
   }
 
   function handleSave() {
-    // validate
     for (const k of Object.keys(fees) as PaymentKey[]) {
       const f = fees[k];
       if (f.customer < 0 || f.user < 0 || Math.abs(f.customer + f.user - f.total) > 0.0001) {

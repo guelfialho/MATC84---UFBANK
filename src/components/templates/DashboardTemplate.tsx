@@ -54,7 +54,6 @@ export const DashboardTemplate: React.FC = () => {
         fees: undefined,
       };
       setMachines(prev => [...prev, newMachine]);
-      // after creating a new machine, open fee modal to configure repasses
       setFeeEditingMachine(newMachine);
       setIsFeeModalOpen(true);
     }
