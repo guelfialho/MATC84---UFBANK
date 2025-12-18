@@ -1,5 +1,5 @@
-import { CadastroTemplate } from "../../components/templates/CadastroTemplate";
+import { DashboardTemplate } from "../../components/templates/DashboardTemplate";
 
 export default function MachinesPage() {
-  return <CadastroTemplate />;
+  return <DashboardTemplate />;
 }

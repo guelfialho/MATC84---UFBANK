@@ -5,13 +5,15 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline';
   className?: string;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button: React.FC<ButtonProps> = ({ 
   children, 
   variant = 'primary',
   className = '',
-  onClick
+  onClick,
+  type = 'button'
 }) => {
   const baseStyles = 'px-6 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105';
   
@@ -22,7 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button type="button" onClick={onClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
+    <button type={type} onClick={onClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
       {children}
     </button>
   );

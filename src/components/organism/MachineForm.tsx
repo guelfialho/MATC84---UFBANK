@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import { Button } from "../atoms/Button";
-import { Input } from "../atoms/Input";
 
-export function MachineForm() {
+interface MachineFormProps {
+  onSubmit?: (machine: { nome: string; modelo: string; serie: string; data: string }) => void;
+  onCancel?: () => void;
+}
+
+export function MachineForm({ onSubmit, onCancel }: MachineFormProps) {
   const [form, setForm] = useState({
     nome: "",
     modelo: "",
@@ -18,8 +22,13 @@ export function MachineForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    alert("Máquina cadastrada com sucesso!");
-    console.log(form);
+    if (onSubmit) {
+      onSubmit(form);
+      setForm({ nome: "", modelo: "", serie: "", data: "" });
+    } else {
+      alert("Máquina cadastrada com sucesso!");
+      console.log(form);
+    }
   }
 
   return (
@@ -29,7 +38,9 @@ export function MachineForm() {
         <input
           name="nome"
           type="text"
+          value={form.nome}
           onChange={handleChange}
+          required
           className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
         />
       </div>
@@ -38,7 +49,9 @@ export function MachineForm() {
         <input
           name="modelo"
           type="text"
+          value={form.modelo}
           onChange={handleChange}
+          required
           className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
         />
       </div>
@@ -47,7 +60,9 @@ export function MachineForm() {
         <input
           name="serie"
           type="number"
+          value={form.serie}
           onChange={handleChange}
+          required
           className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
         />
       </div>
@@ -56,14 +71,23 @@ export function MachineForm() {
         <input
           name="data"
           type="date"
+          value={form.data}
           onChange={handleChange}
+          required
           className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
         />
       </div>
 
-      <Button variant="primary" className="w-full">
-        Cadastrar
-      </Button>
+      <div className="flex gap-4">
+        {onCancel && (
+          <Button variant="secondary" className="flex-1" onClick={onCancel} type="button">
+            Cancelar
+          </Button>
+        )}
+        <Button variant="primary" className={onCancel ? "flex-1" : "w-full"} type="submit">
+          Cadastrar
+        </Button>
+      </div>
     </form>
   );
 }
