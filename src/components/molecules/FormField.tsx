@@ -1,18 +1,35 @@
-import { Label } from "../atoms/Label";
-import { Input } from "../atoms/Input";
+import React from 'react';
+import { Input } from '../atoms/Input';
 
-interface Props {
+interface FormFieldProps {
   label: string;
-  name: string;
   type?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  helperText?: string;
+  error?: string;
 }
 
-export function FormField({ label, name, type, onChange }: Props) {
+export const FormField: React.FC<FormFieldProps> = ({ 
+  label, 
+  type, 
+  placeholder,
+  helperText,
+  error
+}) => {
   return (
-    <div>
-      <Label text={label} />
-      <Input name={name} type={type} onChange={onChange} />
+    <div className="w-full">
+      <Input 
+        label={label} 
+        type={type} 
+        placeholder={placeholder}
+        className={error ? 'border-red-500' : ''}
+      />
+      {helperText && !error && (
+        <p className="mt-1 text-xs text-gray-500">{helperText}</p>
+      )}
+      {error && (
+        <p className="mt-1 text-xs text-red-500">{error}</p>
+      )}
     </div>
   );
-}
+};

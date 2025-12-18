@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FormField } from "../molecules/FormField";
 import { Button } from "../atoms/Button";
+import { Input } from "../atoms/Input";
 
 export function MachineForm() {
   const [form, setForm] = useState({
@@ -23,23 +23,47 @@ export function MachineForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormField label="Nome da Máquina" name="nome" onChange={handleChange} />
-      <FormField label="Modelo" name="modelo" onChange={handleChange} />
-      <FormField
-        label="Número de Série"
-        name="serie"
-        type="number"
-        onChange={handleChange}
-      />
-      <FormField
-        label="Data de Aquisição"
-        name="data"
-        type="date"
-        onChange={handleChange}
-      />
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Nome da Máquina</label>
+        <input
+          name="nome"
+          type="text"
+          onChange={handleChange}
+          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Modelo</label>
+        <input
+          name="modelo"
+          type="text"
+          onChange={handleChange}
+          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Número de Série</label>
+        <input
+          name="serie"
+          type="number"
+          onChange={handleChange}
+          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Data de Aquisição</label>
+        <input
+          name="data"
+          type="date"
+          onChange={handleChange}
+          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+        />
+      </div>
 
-      <Button text="Cadastrar" />
+      <Button variant="primary" className="w-full">
+        Cadastrar
+      </Button>
     </form>
   );
 }
