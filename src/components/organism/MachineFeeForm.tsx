@@ -44,13 +44,15 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
   const [simResult, setSimResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  function setCustomerShare(key: PaymentKey, customer: number) {
+  function setCustomerShare(key: PaymentKey, customer: number | string) {
     const total = fees[key].total;
     let cust = Number(customer) || 0;
     if (cust < 0) cust = 0;
     if (cust > total) cust = total;
-    const user = +(total - cust);
-    setFees({ ...fees, [key]: { total, customer: +cust, user } });
+    // round to one decimal place
+    cust = Math.round(cust * 10) / 10;
+    const user = Math.round((total - cust) * 10) / 10;
+    setFees({ ...fees, [key]: { total, customer: cust, user } });
     setError(null);
   }
 
@@ -78,7 +80,9 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
     const customerFeeAmount = +(value * (fee.customer / 100));
     const userFeeAmount = +(value * (fee.user / 100));
     const customerPays = +(value + customerFeeAmount);
-    setSimResult({ value, feeTotalAmount, customerFeeAmount, userFeeAmount, customerPays });
+    const youPay = +userFeeAmount;
+    const profitTotal = +(customerPays - youPay);
+    setSimResult({ value, feeTotalAmount, customerFeeAmount, userFeeAmount, customerPays, youPay, profitTotal });
     setError(null);
   }
 
@@ -91,16 +95,18 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
           <div className="flex justify-between items-center mb-2">
             <div>
               <p className="text-sm text-gray-300 font-semibold">{k === 'pix' ? 'PIX' : k === 'debit' ? 'Débito' : 'Crédito'}</p>
-              <p className="text-xs text-gray-500">Taxa total: {fees[k].total}%</p>
+              <p className="text-xs text-yellow-300 font-bold">Taxa fixa: {fees[k].total}%</p>
             </div>
             <div className="w-48">
               <label className="text-xs text-gray-400">Cliente (%)</label>
               <input
                 type="number"
+                step="0.1"
+                inputMode="decimal"
                 min={0}
                 max={fees[k].total}
                 value={fees[k].customer}
-                onChange={(e) => setCustomerShare(k, Number(e.target.value))}
+                onChange={(e) => setCustomerShare(k, e.target.value)}
                 className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
               />
               <p className="text-xs text-gray-500 mt-1">Você: {fees[k].user}%</p>
@@ -112,8 +118,8 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="pt-4 flex gap-3">
-        <button onClick={handleSave} className="flex-1 px-4 py-2 bg-purple-600 rounded-lg text-white">Salvar Taxas</button>
         <button onClick={onClose} className="flex-1 px-4 py-2 bg-gray-700 rounded-lg text-gray-200">Cancelar</button>
+        <button onClick={handleSave} className="flex-1 px-4 py-2 bg-purple-600 rounded-lg text-white">Salvar Taxas</button>
       </div>
 
       <hr className="border-gray-700 my-4" />
@@ -137,6 +143,8 @@ export const MachineFeeForm: React.FC<Props> = ({ machineId, initial, onSave, on
             <p className="text-sm text-gray-300">Parcela do cliente ({fees[simType].customer}%): R$ {simResult.customerFeeAmount.toFixed(2)}</p>
             <p className="text-sm text-gray-300">Parcela sua ({fees[simType].user}%): R$ {simResult.userFeeAmount.toFixed(2)}</p>
             <p className="text-sm text-green-400 font-semibold">Cliente paga no final: R$ {simResult.customerPays.toFixed(2)}</p>
+            <p className="text-sm text-yellow-300">Quanto você paga: R$ {simResult.youPay.toFixed(2)}</p>
+            <p className="text-sm text-emerald-300 font-semibold">Lucro total: R$ {simResult.profitTotal.toFixed(2)}</p>
           </div>
         )}
       </div>
