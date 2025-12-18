@@ -50,6 +50,11 @@ export const DashboardTemplate: React.FC = () => {
   };
 
   const handleLogout = () => {
+    try {
+      localStorage.removeItem('ufbank_auth');
+    } catch (e) {
+      // ignore
+    }
     router.push('/');
   };
 

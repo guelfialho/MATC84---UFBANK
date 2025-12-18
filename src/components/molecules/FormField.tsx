@@ -11,8 +11,11 @@ interface FormFieldProps {
   value?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
+interface FormFieldPropsExt extends FormFieldProps {
+  required?: boolean;
+}
 
-export const FormField: React.FC<FormFieldProps> = ({
+export const FormField: React.FC<FormFieldPropsExt> = ({
   label,
   type,
   placeholder,
@@ -20,12 +23,18 @@ export const FormField: React.FC<FormFieldProps> = ({
   error,
   name,
   value,
-  onChange
+  onChange,
+  required
 }) => {
   return (
     <div className="w-full">
       <Input
-        label={label}
+        label={required ? (
+          <>
+            <span>{label}</span>
+            <span className="text-red-400 ml-1">*</span>
+          </>
+        ) : label}
         type={type}
         placeholder={placeholder}
         className={error ? 'border-red-500' : ''}

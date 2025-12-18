@@ -59,8 +59,13 @@ export const RegisterForm: React.FC = () => {
     setError(null);
     setSuccess(null);
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
       setError('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const emailRegex = /^[^@]+@[^@]+\..*$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('E-mail inválido.');
       return;
     }
     if (password.length < 8) {
@@ -96,6 +101,7 @@ export const RegisterForm: React.FC = () => {
           name="firstName"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          required
         />
         <FormField
           label="Sobrenome"
@@ -103,6 +109,7 @@ export const RegisterForm: React.FC = () => {
           name="lastName"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          required
         />
       </div>
 
@@ -113,6 +120,7 @@ export const RegisterForm: React.FC = () => {
         name="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
       />
 
       <FormField
@@ -122,6 +130,7 @@ export const RegisterForm: React.FC = () => {
         name="phone"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
+        required
       />
 
       <FormField
@@ -132,6 +141,7 @@ export const RegisterForm: React.FC = () => {
         name="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
 
       <FormField
@@ -141,6 +151,7 @@ export const RegisterForm: React.FC = () => {
         name="confirmPassword"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        required
       />
 
       {error && <p className="text-red-400 text-sm">{error}</p>}
