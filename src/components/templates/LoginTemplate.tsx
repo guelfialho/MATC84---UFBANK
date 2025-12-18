@@ -59,7 +59,7 @@ export const LoginTemplate: React.FC = () => {
             <FontAwesomeIcon icon={faUniversity} className="text-2xl text-purple-400"/>
           </div>
           <Text variant="heading" className="mb-2">
-            Bem-vindo de volta
+            UFBANK
           </Text>
           <Text variant="body" className="text-gray-400">
             Faça login na sua conta
