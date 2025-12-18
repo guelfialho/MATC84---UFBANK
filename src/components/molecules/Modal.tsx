@@ -12,13 +12,11 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
       />
       
-      {/* Modal Content */}
       <div className="relative bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-gray-800 border-b border-gray-700 p-6 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">{title}</h2>

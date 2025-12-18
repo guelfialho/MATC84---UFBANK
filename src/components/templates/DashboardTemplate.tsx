@@ -19,7 +19,6 @@ interface Machine {
 
 export const DashboardTemplate: React.FC = () => {
   const [machines, setMachines] = useState<Machine[]>(() => {
-    // Initialize state from localStorage
     if (typeof window !== 'undefined') {
       const storedMachines = localStorage.getItem('machines');
       if (storedMachines) {
@@ -31,7 +30,6 @@ export const DashboardTemplate: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
-  // Save machines to localStorage whenever they change
   useEffect(() => {
     if (machines.length > 0 || localStorage.getItem('machines')) {
       localStorage.setItem('machines', JSON.stringify(machines));
@@ -93,7 +91,6 @@ export const DashboardTemplate: React.FC = () => {
           </div>
         </div>
 
-        {/* Machine List */}
         {machines.length === 0 ? (
           <div className="bg-gray-800 rounded-2xl border border-gray-700 p-12 text-center">
             <FontAwesomeIcon icon={faCreditCard} className="text-6xl text-gray-600 mb-4" />
@@ -150,7 +147,6 @@ export const DashboardTemplate: React.FC = () => {
         )}
       </div>
 
-      {/* Modal */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
