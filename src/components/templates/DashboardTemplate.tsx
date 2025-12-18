@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faPlus, faSignOutAlt, faCashRegister } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard, faPlus, faSignOutAlt, faCashRegister, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
 import { Modal } from '../molecules/Modal';
@@ -28,6 +28,7 @@ export const DashboardTemplate: React.FC = () => {
     return [];
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,16 +38,35 @@ export const DashboardTemplate: React.FC = () => {
   }, [machines]);
 
   const handleAddMachine = (machine: { nome: string; modelo: string; serie: string; data: string }) => {
-    const newMachine: Machine = {
-      id: Date.now().toString(),
-      ...machine
-    };
-    setMachines([...machines, newMachine]);
+    if (editingMachine) {
+      // Update existing machine
+      setMachines(machines.map(m => 
+        m.id === editingMachine.id ? { ...m, ...machine } : m
+      ));
+      setEditingMachine(null);
+    } else {
+      // Add new machine
+      const newMachine: Machine = {
+        id: Date.now().toString(),
+        ...machine
+      };
+      setMachines([...machines, newMachine]);
+    }
     setIsModalOpen(false);
   };
 
   const handleDeleteMachine = (id: string) => {
     setMachines(machines.filter(m => m.id !== id));
+  };
+
+  const handleEditMachine = (machine: Machine) => {
+    setEditingMachine(machine);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingMachine(null);
   };
 
   const handleLogout = () => {
@@ -140,12 +160,21 @@ export const DashboardTemplate: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => handleDeleteMachine(machine.id)}
-                  className="w-full px-4 py-2 bg-red-900/20 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-900/40 transition-all text-sm font-semibold"
-                >
-                  Excluir
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditMachine(machine)}
+                    className="flex-1 px-4 py-2 bg-blue-900/20 border border-blue-500/50 text-blue-400 rounded-lg hover:bg-blue-900/40 transition-all text-sm font-semibold flex items-center justify-center gap-2"
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDeleteMachine(machine.id)}
+                    className="flex-1 px-4 py-2 bg-red-900/20 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-900/40 transition-all text-sm font-semibold"
+                  >
+                    Excluir
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -154,12 +183,19 @@ export const DashboardTemplate: React.FC = () => {
 
       <Modal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
-        title="Nova Máquina"
+        onClose={handleCloseModal}
+        title={editingMachine ? "Editar Máquina" : "Nova Máquina"}
       >
         <MachineForm 
           onSubmit={handleAddMachine}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={handleCloseModal}
+          initialValues={editingMachine ? {
+            nome: editingMachine.nome,
+            modelo: editingMachine.modelo,
+            serie: editingMachine.serie,
+            data: editingMachine.data
+          } : undefined}
+          isEditing={!!editingMachine}
         />
       </Modal>
     </div>

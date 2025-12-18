@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../atoms/Button";
 
 interface MachineFormProps {
   onSubmit?: (machine: { nome: string; modelo: string; serie: string; data: string }) => void;
   onCancel?: () => void;
+  initialValues?: { nome: string; modelo: string; serie: string; data: string };
+  isEditing?: boolean;
 }
 
-export function MachineForm({ onSubmit, onCancel }: MachineFormProps) {
+export function MachineForm({ onSubmit, onCancel, initialValues, isEditing }: MachineFormProps) {
   const [form, setForm] = useState({
     nome: "",
     modelo: "",
     serie: "",
     data: "",
   });
+
+  useEffect(() => {
+    if (initialValues) {
+      setForm(initialValues);
+    }
+  }, [initialValues]);
   const [error, setError] = useState<string | null>(null);
   const today = new Date();
   const yyyy = today.getFullYear();
@@ -110,7 +118,7 @@ export function MachineForm({ onSubmit, onCancel }: MachineFormProps) {
           </Button>
         )}
         <Button variant="primary" className={onCancel ? "flex-1" : "w-full"} type="submit">
-          Cadastrar
+          {isEditing ? "Salvar" : "Cadastrar"}
         </Button>
       </div>
     </form>
