@@ -8,7 +8,7 @@ interface FormFieldProps {
   helperText?: string;
   error?: string;
   name?: string;
-  value?: any;
+  value?: string | number | readonly string[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 interface FormFieldPropsExt extends FormFieldProps {
