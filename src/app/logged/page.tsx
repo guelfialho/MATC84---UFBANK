@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { DashboardTemplate } from "../../components/templates/DashboardTemplate";
+import { LoggedTemplate } from '../../components/templates/LoggedTemplate';
 
-export default function MachinesPage() {
+export default function LoggedPage() {
   const router = useRouter();
   const hasCheckedAuth = useRef(false);
 
@@ -23,5 +23,5 @@ export default function MachinesPage() {
     }
   }, [router]);
 
-  return <DashboardTemplate />;
+  return <LoggedTemplate />;
 }

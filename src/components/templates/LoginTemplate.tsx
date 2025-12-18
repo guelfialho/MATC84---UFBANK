@@ -48,7 +48,7 @@ export const LoginTemplate: React.FC = () => {
     }
     // mock auth token
     localStorage.setItem('ufbank_auth', JSON.stringify({ email, token: 'mock-token' }));
-    router.push('/machines');
+    router.push('/logged');
   };
 
   return (
