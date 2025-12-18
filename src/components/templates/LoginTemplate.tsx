@@ -22,8 +22,8 @@ export const LoginTemplate: React.FC = () => {
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 md:p-12">
         <div className="text-center mb-8">
-          <div className="inline-block p-3 bg-purple-900/50 rounded-full mb-4 ring-2 ring-purple-500/50">
-            <FontAwesomeIcon icon={faUniversity} className="w-8 h-8 text-purple-400"/>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-900/50 rounded-full mb-4 ring-2 ring-purple-500/50">
+            <FontAwesomeIcon icon={faUniversity} className="text-2xl text-purple-400"/>
           </div>
           <Text variant="heading" className="mb-2">
             Bem-vindo de volta
